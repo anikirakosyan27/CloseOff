@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+}
+
+@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DataAccess.Models.User> SignInManager
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="bg-full-page hero-bg-dark hero-img-back back-fixed">
+    <div class="container pt-5">
+        <div class=" absolute-center pt-5">
+            <div class="card color-dark">
+                <div class="card-header card-header-primary">
+                    <h4 class="pt-2 pb-4"> Login</h4>
+                    @{
+                        var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                        if (loginProviders.Count > 0)
+                        {
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <form asp-action="ExternalLogin" method="post" class="form-horizontal">
+                                        <input type="text" name="returnurl" value="@ViewData["ReturnUrl"]" hidden />
+                                        <input type="text" name="provider" value="Facebook" hidden />
+                                        <button type="submit"><i class="fab fa-facebook-square f-20 mr-2"></i></button>
+                                    </form>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <form asp-action="ExternalLogin" method="post" class="form-horizontal">
+                                        <input type="text" name="returnurl" value="@ViewData["ReturnUrl"]" hidden />
+                                        <input type="text" name="provider" value="Google" hidden />
+                                        <button type="submit"><i class="fab fa-google-plus-square f-20 ml-2"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="card-block p-5">
+                    <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <fieldset>
+                            <input type="hidden" asp-for="RememberMe" />
+                            <div class="input-group">
+                                <input asp-for="Email" class="form-control" placeholder="Email">
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <div class="input-group mt-5">
+                                <input asp-for="Password" class="form-control" placeholder="Password" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-raised btn-primary btn-block">
+                                        Login
+                                        <i class="fas fa-arrow-right no-mr ml-1"></i>
+                                    </button>
+                                </div>
+                              
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center p-4">
+               Be Healty)
+            </div>
+        </div>
+    </div>
+</div>
+

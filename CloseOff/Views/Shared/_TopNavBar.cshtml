@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using DataAccess.Models;
+@using Microsoft.AspNetCore.Hosting;
+@using DataAccess;
+@inject UserManager<User> UserManager
+@inject IHostingEnvironment HostingEnvironment
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="navbar-translate">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CloseOff</a>
+    </div>
+}
+else
+{
+<div class="navbar-translate">
+    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CloseOff</a> @*todo*@
+</div>
+}
+<div class="collapse navbar-collapse show">
+    <ul class="navbar-nav ml-auto">
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark text_transform modal-link-lg"   asp-controller="Account" asp-action="Register">Registration</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark text_transform modal-link" asp-controller="Account" asp-action="Login">Login</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="navbar-brand text-dark nav-link"  asp-controller="User" asp-action="AllIsolated">Isolated</a>
+            </li>
+            <li class="nav-item">
+                <a class="navbar-brand text-dark nav-link" asp-controller="User" asp-action="AllPatients">Patients</a>
+            </li>
+            
+            <li class="dropdown nav-item">
+                <a href="#pablo" class="profile-photo hovernone dropdown-toggle nav-link" data-toggle="dropdown">
+                    <div>
+                        @user.FirstName @user.LastName
+                    </div>
+                    <div class="ripple-container"></div>
+                </a>
+
+                <div class="dropdown-menu left_50 mt-3 ">
+
+                    <a asp-controller="User" asp-action="Edit" class="dropdown-item modal-link">
+                        Chnage
+                    </a>
+                    <a asp-controller="User" asp-action="ChangePassword" asp-area="" asp-route-Id="@user.Id" class="dropdown-item modal-link">
+                        Change password
+                    </a>
+                    <a asp-area="" asp-action="Logout" asp-controller="Account" class="dropdown-item">
+                        Log Out
+                    </a>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
